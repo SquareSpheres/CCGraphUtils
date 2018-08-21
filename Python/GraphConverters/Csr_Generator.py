@@ -193,23 +193,3 @@ def write_csr_to_txt_file(csr_mat: sci.sparse.csr_matrix, num_vertices: int, fil
 
     return
 
-
-internet = "C:\\Users\\yngve\Desktop\\internet.mtx"
-amazon = "C:\\Users\\yngve\Desktop\\Amazon0601.txt"
-usroad = "C:\\Users\\yngve\Desktop\\USA-road-d.NY.gr"
-
-test = "C:\\Users\\yngve\Desktop\\test.txt"
-
-csr_tuple = from_file_to_csr("C:\\Users\\yngve\Desktop\\as-skitter.txt")
-
-csr_matrix = csr_tuple[0]
-num_nodes = csr_tuple[1]
-
-print(num_nodes)
-
-write_csr_to_bin_file(csr_matrix, num_nodes, "C:\\Users\\yngve\Desktop\\As_skitter.egr")
-# write_csr_to_txt_file(csr_matrix, num_nodes, "C:\\Users\\yngve\Desktop\\internetP.txt")
-
-print(str(csr_matrix.indptr) + "size = " + str(csr_matrix.indptr.size))
-print(str(csr_matrix.indices) + "size = " + str(csr_matrix.indices.size))
-print(num_nodes)
