@@ -8,6 +8,23 @@
 namespace fs = std::experimental::filesystem;
 
 
+void ReadEgrFile(int & nodes, int & edges, int ** nindex, int ** nlist, const std::string & filename)
+{
+    FILE* f = fopen(filename.c_str(), "rb");  if (f == NULL) { fprintf(stderr, "ERROR: could not open file %s\n\n", filename.c_str());  exit(-1); }
+    int cnt = fread(&nodes, sizeof(nodes), 1, f);  if (cnt != 1) { fprintf(stderr, "ERROR: failed to read nodes\n\n");  exit(-1); }
+    cnt = fread(&edges, sizeof(edges), 1, f);  if (cnt != 1) { fprintf(stderr, "ERROR: failed to read edges\n\n");  exit(-1); }
+    if ((nodes < 1) || (edges < 0)) { fprintf(stderr, "ERROR: node or edge count too low\n\n");  exit(-1); }
+
+    *nindex = (int*)malloc((nodes + 1) * sizeof(nindex[0]));
+    *nlist = (int*)malloc(edges * sizeof(nlist[0]));
+    if ((nindex == NULL) || (nlist == NULL)) { fprintf(stderr, "ERROR: memory allocation failed\n\n");  exit(-1); }
+
+    cnt = fread(*nindex, sizeof(*nindex[0]), nodes + 1, f);  if (cnt != nodes + 1) { fprintf(stderr, "ERROR: failed to read neighbor index list\n\n");  exit(-1); }
+    cnt = fread(*nlist, sizeof(*nlist[0]), edges, f);  if (cnt != edges) { fprintf(stderr, "ERROR: failed to read neighbor list\n\n");  exit(-1); }
+
+    fclose(f);
+}
+
 int ReadMtxFile(const std::string& filename, std::set<Edge>& edgeList)
 {
     fs::path filePath = filename;
